@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:_2307св1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -18,8 +19,8 @@
                     <TextBox Margin="10 2 0 2" Width="100" Text="{Binding Path=Company}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Price"/>
-                    <TextBox Margin="10 2 0 2" Width="100" Text="{Binding Path=Price}"/>
+                    <Label Name="test" Content="Price"/>
+                    <TextBox  Margin="10 2 0 2" Width="100" Text="{Binding Path=Price}"/>
                 </StackPanel>
             </StackPanel>
             <ListBox ItemsSource="{Binding Phones}" SelectedItem="{Binding SelectedPhone}" Height="300"/>
@@ -30,8 +31,13 @@
                 <Button Content=" Remove element " Command="{Binding RemoveElementPhone}"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Background="Bisque" Height="100">
-
+        <StackPanel Name="TestContext" Background="Bisque" Height="100">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseEnter">
+                    <i:InvokeCommandAction
+                        Command="{Binding StackPanel_MouseEnter}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </StackPanel>
     </StackPanel>
 </Window>

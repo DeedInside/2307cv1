@@ -9,6 +9,7 @@ namespace _2307св1
         {
             InitializeComponent();
             PanelPhone.DataContext = new MainVM();
+            TestContext.DataContext = new TestContextVM();
         }
     }
 }

@@ -12,7 +12,8 @@ namespace _2307св1
 {
     public class Phone : Property
     {
-        public int Id;
+        public int Id { get; set; }
+
         private string title;
         public string Title 
         {

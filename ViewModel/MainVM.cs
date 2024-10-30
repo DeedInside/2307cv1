@@ -1,14 +1,21 @@
 ﻿
 using _2307св1.Model;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace _2307св1.ViewModel
 {
     public class MainVM: Property
     {
         private Phone selectedPhone;
-        public Phone SelectedPhone { get { return selectedPhone; } set { selectedPhone = value; OnPropertyChanged("SelectedPhone"); } }
+        public Phone SelectedPhone 
+        { 
+            get { return selectedPhone; } 
+            set { selectedPhone = value; 
+                OnPropertyChanged("SelectedPhone"); } 
+        }
         private string title;
         public string Title { get{ return title; } set { title = value; OnPropertyChanged("Title"); } }
         private string price;
@@ -16,9 +23,12 @@ namespace _2307св1.ViewModel
         private string company;
         public string Company { get { return company; } set { company = value; OnPropertyChanged("Company"); } }
         public ObservableCollection<Phone> Phones { get; set; } = new ObservableCollection<Phone>();
+        private ApplicationContext _context = new ApplicationContext();
         public MainVM()
         {
-            Phones = CreateDataPhone(); 
+            _context.Database.EnsureCreated();
+            _context.Phones.Load();
+            Phones = _context.Phones.Local.ToObservableCollection();
         }
         
         private RelayCommand removeElementPhone;
@@ -31,7 +41,9 @@ namespace _2307св1.ViewModel
                    {
                        if(SelectedPhone != null)
                        {
-                           Phones.Remove(selectedPhone);
+                           _context.Phones.Remove(selectedPhone);
+                           _context.SaveChanges();
+                           //_context.Entry(selectedPhone).State = EntityState.Modified;
                        }
                    }));
             }
@@ -44,7 +56,9 @@ namespace _2307св1.ViewModel
                return addPhoneToList ??
                   (addPhoneToList = new RelayCommand(obj =>
                   {
-                      Phones.Add(new Phone(Title, Company, int.Parse(Price)));
+                      _context.Phones.Add(new Phone(Title, Company, int.Parse(Price)));
+                      _context.SaveChanges();
+                      //Phones.Add(new Phone(Title, Company, int.Parse(Price)));
                   }));
             }
         }
